@@ -1,80 +1,39 @@
 <script setup>
 import { computed, ref } from "vue";
+import Players from "./components/PlayerSearch.vue";
+import Teams from "./components/TeamSearch.vue";
 
-const query = ref("");
-const formatedQuery = computed(function () {
-  return query.value.split(" ").join("+");
-});
-const key = ref("");
-let teamInfo = ref([]);
+const currentTab = ref("Teams");
 
-function getTeam() {
-  const url = `https://v3.football.api-sports.io/teams?search=${formatedQuery.value}`;
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "x-rapidapi-host": "v3.football.api-sports.io",
-      "x-rapidapi-key": key.value,
-    },
-  })
-    .then((res) => res.json())
-    .then((result) => (teamInfo.value = result.response))
-    .catch((err) => console.log(err));
+function update(e) {
+  currentTab.value = e.innerText;
+  console.log(e.innerText);
 }
+
+const tabs = { Players, Teams };
 </script>
 
 <template>
-  <section class="grid w-96 h-28 justify-center mx-auto">
-    <p>
-      api key:
-      <input
-        class="border-2 rounded border-black focus:border-blue-500"
-        v-model="key"
-      />
-    </p>
-    <p class="justify-self-center">
-      team search:
-      <input
-        class="border-2 rounded border-black focus:border-blue-500"
-        type="text"
-        name=""
-        id=""
-        v-model="query"
-      />
-    </p>
-
-    <button
-      class="bg-blue-500 w-20 h-9 text-white justify-self-center"
-      @click="getTeam"
-    >
-      search
-    </button>
-  </section>
-
-  <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">
-    <div
-      class="justify-self-center border-2 grid rounded-md border-blue-500 w-72"
-      v-for="team in teamInfo"
-    >
-      <ul>
-        <li>
-          <h3>team name: {{ team.team.name || "N/A" }}</h3>
-        </li>
-        <li>
-          <h3>team code: {{ team.team.code || "N/A" }}</h3>
-        </li>
-        <li>
-          <h3>founded: {{ team.team.founded || "N/A" }}</h3>
-        </li>
-        <li>
-          <h3>country: {{ team.team.country || "N/A" }}</h3>
-        </li>
-        <img
-          class="justify-self-center"
-          :src="team.team.logo"
-          :alt="team.team.name || 'N/A'"
-        />
-      </ul>
+  <nav
+    class="flex justify-center items-center text-white h-16 w-screen border-b-2 mb-5"
+  >
+    <div class="w-1/3 flex justify-evenly">
+      <h2
+        @click="update($event.target)"
+        class="text-2xl w-1/2 h-16 text-center hover:bg-white hover:text-black cursor-pointer items-center flex justify-center transition-all"
+      >
+        Teams
+      </h2>
+      <h2
+        class="justify-center text-2xl w-1/2 h-16 flex items-center text-center hover:bg-white hover:text-black cursor-pointer transition-all"
+        @click="update($event.target)"
+      >
+        Players
+      </h2>
     </div>
-  </section>
+  </nav>
+
+  <main class="bg-slate-900">
+    <component :is="tabs[currentTab]"></component>
+  </main>
 </template>
