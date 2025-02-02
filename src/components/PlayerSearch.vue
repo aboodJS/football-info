@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import InfoBox from "./InfoBox.vue";
-
+const show = ref(false);
 const query = ref("");
 const formatedQuery = computed(function () {
   return query.value.split(" ").join("+");

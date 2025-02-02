@@ -14,7 +14,7 @@ function closeBox(e) {
 
 <template>
   <div
-    class="grid bg-slate-800 w-72 h-80 absolute rounded top-1/4 right-[38%]"
+    class="grid bg-slate-800 w-72 h-80 fixed rounded top-1/4 right-[38%]"
     v-if="visible"
   >
     <slot></slot>
