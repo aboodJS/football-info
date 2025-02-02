@@ -1,6 +1,8 @@
 <script setup>
-import { ref, computed } from "vue";
+import InfoBox from "./InfoBox.vue";
 
+import { ref, computed } from "vue";
+const show = ref(false);
 const query = ref("");
 const formatedQuery = computed(function () {
   return query.value.split(" ").join("+");
@@ -23,6 +25,11 @@ function getTeam() {
     })
     .catch((err) => console.log(err));
 }
+
+const teamName = ref("");
+const teamIcon = ref("");
+const teamDate = ref("");
+const teamCountry = ref("");
 </script>
 
 <template>
@@ -58,11 +65,32 @@ function getTeam() {
         search
       </button>
     </section>
-
+    <info-box
+      :visible="show"
+      :name="teamName"
+      :foundingDate="teamDate"
+      :image="teamIcon"
+    >
+      <box-icon
+        name="x"
+        color="#ffffff"
+        @click="() => (show = false)"
+        class="justify-self-end"
+      ></box-icon>
+    </info-box>
     <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">
       <div
         class="justify-self-center border-2 grid rounded-md border-blue-500 w-72 hover:bg-blue-500 text-white hover:shadow-md hover:shadow-slate-300 transition-all"
         v-for="team in teamInfo"
+        @click="
+          () => {
+            show = true;
+            teamName = team.team.name;
+            teamIcon = team.team.logo;
+            teamDate = team.team.founded;
+            teamCountry = team.team.country;
+          }
+        "
       >
         <ul>
           <li>

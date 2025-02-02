@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
+import InfoBox from "./InfoBox.vue";
+
 const query = ref("");
 const formatedQuery = computed(function () {
   return query.value.split(" ").join("+");
@@ -20,6 +22,9 @@ function getPlayers() {
     .then((result) => (playerInfo.value = result.response))
     .catch((err) => console.log(err));
 }
+
+const playerName = ref("");
+const playerIcon = ref("");
 </script>
 
 <template>
@@ -55,11 +60,25 @@ function getPlayers() {
         search
       </button>
     </section>
-
+    <info-box :visible="show" :name="playerName" :image="playerIcon">
+      <box-icon
+        name="x"
+        color="#ffffff"
+        @click="() => (show = false)"
+        class="justify-self-end"
+      ></box-icon>
+    </info-box>
     <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">
       <div
         class="justify-self-center border-2 grid rounded-md border-blue-500 w-72 hover:bg-blue-500 text-white hover:shadow-md hover:shadow-slate-300 transition-all"
         v-for="player in playerInfo"
+        @click="
+          () => {
+            show = true;
+            playerName = player.player.name;
+            playerIcon = player.player.photo;
+          }
+        "
       >
         <ul>
           <h3>
