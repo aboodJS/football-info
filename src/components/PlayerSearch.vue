@@ -25,6 +25,8 @@ function getPlayers() {
 
 const playerName = ref("");
 const playerIcon = ref("");
+const playerCountry = ref("");
+const playerBirth = ref("");
 </script>
 
 <template>
@@ -60,7 +62,13 @@ const playerIcon = ref("");
         search
       </button>
     </section>
-    <info-box :visible="show" :name="playerName" :image="playerIcon">
+    <info-box
+      :visible="show"
+      :name="playerName"
+      :image="playerIcon"
+      :country="playerCountry"
+      :foundingDate="playerBirth"
+    >
       <box-icon
         name="x"
         color="#ffffff"
@@ -75,8 +83,10 @@ const playerIcon = ref("");
         @click="
           () => {
             show = true;
-            playerName = player.player.name;
+            playerName = player.player.name || 'N/A';
             playerIcon = player.player.photo;
+            playerCountry = player.player.birth.country || 'N/A';
+            playerBirth = player.player.birth.date || 'N/A';
           }
         "
       >

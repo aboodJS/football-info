@@ -5,6 +5,7 @@ const props = defineProps([
   "foundingDate",
   "visible",
   "country",
+  "venue",
 ]);
 function closeBox(e) {
   props.visible = false;
@@ -19,10 +20,11 @@ function closeBox(e) {
   >
     <slot></slot>
     <main class="grid text-white justify-center text-center">
-      <img :src="image" :alt="name" />
-      <h1>{{ name }}</h1>
-      <p>{{ country }}</p>
-      <p>{{ foundingDate }}</p>
+      <img class="justify-self-center" :src="image" :alt="name" />
+      <h1>Name: {{ name }}</h1>
+      <p>Country: {{ country }}</p>
+      <p>Birth day: {{ foundingDate }}</p>
+      <p>team venue: {{ venue }}</p>
     </main>
   </div>
 </template>

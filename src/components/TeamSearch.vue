@@ -30,6 +30,7 @@ const teamName = ref("");
 const teamIcon = ref("");
 const teamDate = ref("");
 const teamCountry = ref("");
+const teamVenue = ref("");
 </script>
 
 <template>
@@ -69,7 +70,9 @@ const teamCountry = ref("");
       :visible="show"
       :name="teamName"
       :foundingDate="teamDate"
+      :country="teamCountry"
       :image="teamIcon"
+      :venue="teamVenue"
     >
       <box-icon
         name="x"
@@ -87,7 +90,8 @@ const teamCountry = ref("");
             show = true;
             teamName = team.team.name;
             teamIcon = team.team.logo;
-            teamDate = team.team.founded;
+            teamDate = team.team.founded || 'N/A';
+            teamVenue = team.venue.name || 'N/A';
             teamCountry = team.team.country;
           }
         "
