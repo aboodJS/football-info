@@ -73,7 +73,7 @@ const playerBirth = ref("");
         name="x"
         color="#ffffff"
         @click="() => (show = false)"
-        class="justify-self-end"
+        class="justify-self-end h-fit w-fit"
       ></box-icon>
     </info-box>
     <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">

@@ -1,4 +1,5 @@
 <script setup>
+const emits = defineEmits(["getStats"]);
 const props = defineProps([
   "image",
   "name",
@@ -6,6 +7,8 @@ const props = defineProps([
   "visible",
   "country",
   "venue",
+  "goals",
+  "assets",
 ]);
 function closeBox(e) {
   props.visible = false;
@@ -15,16 +18,22 @@ function closeBox(e) {
 
 <template>
   <div
-    class="grid bg-slate-800 w-72 h-80 fixed rounded top-1/4 right-[38%]"
+    class="grid bg-slate-800 w-fit h-80 fixed rounded top-1/4 right-auto left-auto"
     v-if="visible"
   >
     <slot></slot>
-    <main class="grid text-white justify-center text-center">
+    <main
+      class="flex text-white justify-center text-center items-center self-center"
+    >
       <img class="justify-self-center" :src="image" :alt="name" />
-      <h1>Name: {{ name }}</h1>
-      <p>Country: {{ country }}</p>
-      <p>Birth day: {{ foundingDate }}</p>
-      <p>team venue: {{ venue }}</p>
+      <div>
+        <h1>Name: {{ name }}</h1>
+        <p>Country: {{ country }}</p>
+        <p>Birth day: {{ foundingDate }}</p>
+        <p>{{ venue || "" }}</p>
+        <p>{{ goals || "" }}</p>
+        <p>{{ assets || "" }}</p>
+      </div>
     </main>
   </div>
 </template>
