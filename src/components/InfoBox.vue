@@ -8,7 +8,8 @@ const props = defineProps([
   "country",
   "venue",
   "goals",
-  "assets",
+  "assits",
+  "id",
 ]);
 function closeBox(e) {
   props.visible = false;
@@ -30,9 +31,10 @@ function closeBox(e) {
         <h1>Name: {{ name }}</h1>
         <p>Country: {{ country }}</p>
         <p>Birth day: {{ foundingDate }}</p>
-        <p>{{ venue || "" }}</p>
-        <p>{{ goals || "" }}</p>
-        <p>{{ assets || "" }}</p>
+        <p>team venue: {{ venue || "" }}</p>
+        <p>goals: {{ goals || 0 }}</p>
+        <p>assits: {{ assits || 0 }}</p>
+        <p>id: {{ id || "" }}</p>
       </div>
     </main>
   </div>

@@ -3,11 +3,32 @@ import { ref, computed } from "vue";
 import InfoBox from "./InfoBox.vue";
 const show = ref(false);
 const query = ref("");
+const totalGoals = ref("");
+const totalAssits = ref("");
 const formatedQuery = computed(function () {
   return query.value.split(" ").join("+");
 });
 const key = ref("");
 let playerInfo = ref([]);
+
+function getPlayerStats(id) {
+  const url = `https://v3.football.api-sports.io/players?id=${id}&season=2023`;
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "x-rapidapi-host": "v3.football.api-sports.io",
+      "x-rapidapi-key": key.value,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => data.response)
+    .then((res) => res[0])
+    .then((data) => {
+      totalGoals.value = data.statistics[0].goals.total;
+      totalAssits.value = data.statistics[0].goals.assists;
+    })
+    .catch((err) => console.log(err));
+}
 
 function getPlayers() {
   const url = `https://v3.football.api-sports.io/players/profiles?search=${formatedQuery.value}`;
@@ -27,6 +48,7 @@ const playerName = ref("");
 const playerIcon = ref("");
 const playerCountry = ref("");
 const playerBirth = ref("");
+const playerId = ref("");
 </script>
 
 <template>
@@ -68,6 +90,9 @@ const playerBirth = ref("");
       :image="playerIcon"
       :country="playerCountry"
       :foundingDate="playerBirth"
+      :id="playerId"
+      :goals="totalGoals"
+      :assits="totalAssits"
     >
       <box-icon
         name="x"
@@ -87,6 +112,8 @@ const playerBirth = ref("");
             playerIcon = player.player.photo;
             playerCountry = player.player.birth.country || 'N/A';
             playerBirth = player.player.birth.date || 'N/A';
+            playerId = player.player.id;
+            getPlayerStats(playerId);
           }
         "
       >
