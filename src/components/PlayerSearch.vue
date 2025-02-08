@@ -3,11 +3,32 @@ import { ref, computed } from "vue";
 import InfoBox from "./InfoBox.vue";
 const show = ref(false);
 const query = ref("");
+const totalGoals = ref("");
+const totalAssits = ref("");
 const formatedQuery = computed(function () {
   return query.value.split(" ").join("+");
 });
 const key = ref("");
 let playerInfo = ref([]);
+
+function getPlayerStats(id) {
+  const url = `https://v3.football.api-sports.io/players?id=${id}&season=2023`;
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "x-rapidapi-host": "v3.football.api-sports.io",
+      "x-rapidapi-key": key.value,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => data.response)
+    .then((res) => res[0])
+    .then((data) => {
+      totalGoals.value = data.statistics[0].goals.total;
+      totalAssits.value = data.statistics[0].goals.assists;
+    })
+    .catch((err) => console.log(err));
+}
 
 function getPlayers() {
   const url = `https://v3.football.api-sports.io/players/profiles?search=${formatedQuery.value}`;
@@ -23,10 +44,15 @@ function getPlayers() {
     .catch((err) => console.log(err));
 }
 
+// variables for storing player info
+
 const playerName = ref("");
 const playerIcon = ref("");
 const playerCountry = ref("");
 const playerBirth = ref("");
+const playerId = ref("");
+
+// styling related variables
 </script>
 
 <template>
@@ -68,17 +94,20 @@ const playerBirth = ref("");
       :image="playerIcon"
       :country="playerCountry"
       :foundingDate="playerBirth"
+      :id="playerId"
+      :goals="totalGoals"
+      :assits="totalAssits"
+      class="justify-self-center"
     >
       <box-icon
         name="x"
-        color="#ffffff"
         @click="() => (show = false)"
-        class="justify-self-end"
+        class="justify-self-end h-fit w-fit rounded-full text-white hover:bg-white hover:text-black transition-all"
       ></box-icon>
     </info-box>
     <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">
       <div
-        class="justify-self-center border-2 grid rounded-md border-blue-500 w-72 hover:bg-blue-500 text-white hover:shadow-md hover:shadow-slate-300 transition-all"
+        class="justify-self-center outline-none grid rounded-md outline-blue-500 w-72 hover:bg-blue-500 text-white hover:outline-2 hover:outline-slate-300 transition-all"
         v-for="player in playerInfo"
         @click="
           () => {
@@ -87,6 +116,8 @@ const playerBirth = ref("");
             playerIcon = player.player.photo;
             playerCountry = player.player.birth.country || 'N/A';
             playerBirth = player.player.birth.date || 'N/A';
+            playerId = player.player.id;
+            getPlayerStats(playerId);
           }
         "
       >
