@@ -44,11 +44,15 @@ function getPlayers() {
     .catch((err) => console.log(err));
 }
 
+// variables for storing player info
+
 const playerName = ref("");
 const playerIcon = ref("");
 const playerCountry = ref("");
 const playerBirth = ref("");
 const playerId = ref("");
+
+// styling related variables
 </script>
 
 <template>
@@ -93,17 +97,17 @@ const playerId = ref("");
       :id="playerId"
       :goals="totalGoals"
       :assits="totalAssits"
+      class="justify-self-center"
     >
       <box-icon
         name="x"
-        color="#ffffff"
         @click="() => (show = false)"
-        class="justify-self-end h-fit w-fit"
+        class="justify-self-end h-fit w-fit rounded-full text-white hover:bg-white hover:text-black transition-all"
       ></box-icon>
     </info-box>
     <section class="grid grid-rows-4 grid-cols-4 justify-center gap-5">
       <div
-        class="justify-self-center border-2 grid rounded-md border-blue-500 w-72 hover:bg-blue-500 text-white hover:shadow-md hover:shadow-slate-300 transition-all"
+        class="justify-self-center outline-none grid rounded-md outline-blue-500 w-72 hover:bg-blue-500 text-white hover:outline-2 hover:outline-slate-300 transition-all"
         v-for="player in playerInfo"
         @click="
           () => {

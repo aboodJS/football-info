@@ -33,7 +33,7 @@ const tabs = { Players, Teams };
     </div>
   </nav>
 
-  <main class="bg-slate-900">
+  <main class="bg-slate-900 grid">
     <component :is="tabs[currentTab]"></component>
   </main>
 </template>
